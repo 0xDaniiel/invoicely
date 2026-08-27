@@ -21,7 +21,7 @@ A minimal invoicing platform. Fill in a form, preview the invoice live, then dow
 
 ## Getting started
 
-\`\`\`bash
+\`\`\`
 pnpm install
 pnpm dev
 \`\`\`
