@@ -1,7 +1,7 @@
 // components/invoice-form/FormPrimitives.tsx
 import {
   InputHTMLAttributes,
-  LabelHTMLAttributes,
+  // LabelHTMLAttributes,
   ReactNode,
   TextareaHTMLAttributes,
 } from "react";
