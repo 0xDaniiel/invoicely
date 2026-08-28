@@ -1,5 +1,11 @@
 // src/components/invoice-pdf/InvoiceDocument.tsx
-import { Document, Image, Page, Text, View } from "@react-pdf/renderer";
+import {
+  Document,
+  Image as PdfImage,
+  Page,
+  Text,
+  View,
+} from "@react-pdf/renderer";
 import type { Invoice } from "@/types/invoice";
 import {
   calculateLineItemAmount,
@@ -177,10 +183,9 @@ export function InvoiceDocument({
                     {paymentMethods.wallet.address}
                   </Text>
                   {paymentMethods.wallet.showQrCode && walletQrCodeDataUrl && (
-                    <Image
+                    <PdfImage
                       src={walletQrCodeDataUrl}
                       style={styles.qrImage}
-                      alt="Qr Image"
                     />
                   )}
                 </View>
