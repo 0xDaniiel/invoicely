@@ -8,6 +8,7 @@ import { InvoiceForm } from "@/components/invoice-form/InvoiceForm";
 import { InvoicePreviewModal } from "./InvoicePreviewModal";
 import { PreviewButton } from "./PreviewButton";
 import { DownloadPdfButton } from "./DownloadPdfButton";
+import { SaveInvoiceButton } from "./SaveInvoiceButton";
 
 export function InvoiceWorkspace() {
   const invoice = useInvoiceStore((s) => s.invoice);
@@ -23,6 +24,7 @@ export function InvoiceWorkspace() {
           invoice={invoice}
           walletQrCodeDataUrl={walletQrCodeDataUrl}
         />
+        <SaveInvoiceButton invoice={invoice} />
       </div>
 
       {/* PDFViewer only mounts once the modal opens — no background re-render on every keystroke */}
