@@ -67,6 +67,7 @@ export type InvoiceCountAggregateOutputType = {
   userId: number
   clientName: number
   clientEmail: number
+  client: number
   businessInfo: number
   lineItems: number
   taxRate: number
@@ -122,6 +123,7 @@ export type InvoiceCountAggregateInputType = {
   userId?: true
   clientName?: true
   clientEmail?: true
+  client?: true
   businessInfo?: true
   lineItems?: true
   taxRate?: true
@@ -226,6 +228,7 @@ export type InvoiceGroupByOutputType = {
   userId: string
   clientName: string
   clientEmail: string
+  client: runtime.JsonValue
   businessInfo: runtime.JsonValue
   lineItems: runtime.JsonValue
   taxRate: runtime.Decimal
@@ -266,6 +269,7 @@ export type InvoiceWhereInput = {
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientName?: Prisma.StringFilter<"Invoice"> | string
   clientEmail?: Prisma.StringFilter<"Invoice"> | string
+  client?: Prisma.JsonFilter<"Invoice">
   businessInfo?: Prisma.JsonFilter<"Invoice">
   lineItems?: Prisma.JsonFilter<"Invoice">
   taxRate?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -284,6 +288,7 @@ export type InvoiceOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   clientName?: Prisma.SortOrder
   clientEmail?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   businessInfo?: Prisma.SortOrder
   lineItems?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -305,6 +310,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientName?: Prisma.StringFilter<"Invoice"> | string
   clientEmail?: Prisma.StringFilter<"Invoice"> | string
+  client?: Prisma.JsonFilter<"Invoice">
   businessInfo?: Prisma.JsonFilter<"Invoice">
   lineItems?: Prisma.JsonFilter<"Invoice">
   taxRate?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -323,6 +329,7 @@ export type InvoiceOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   clientName?: Prisma.SortOrder
   clientEmail?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   businessInfo?: Prisma.SortOrder
   lineItems?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -348,6 +355,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   clientName?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   clientEmail?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  client?: Prisma.JsonWithAggregatesFilter<"Invoice">
   businessInfo?: Prisma.JsonWithAggregatesFilter<"Invoice">
   lineItems?: Prisma.JsonWithAggregatesFilter<"Invoice">
   taxRate?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -364,6 +372,7 @@ export type InvoiceCreateInput = {
   id?: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -382,6 +391,7 @@ export type InvoiceUncheckedCreateInput = {
   userId: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -398,6 +408,7 @@ export type InvoiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -416,6 +427,7 @@ export type InvoiceUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -433,6 +445,7 @@ export type InvoiceCreateManyInput = {
   userId: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -449,6 +462,7 @@ export type InvoiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -466,6 +480,7 @@ export type InvoiceUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -493,6 +508,7 @@ export type InvoiceCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   clientName?: Prisma.SortOrder
   clientEmail?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   businessInfo?: Prisma.SortOrder
   lineItems?: Prisma.SortOrder
   taxRate?: Prisma.SortOrder
@@ -599,6 +615,7 @@ export type InvoiceCreateWithoutUserInput = {
   id?: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -615,6 +632,7 @@ export type InvoiceUncheckedCreateWithoutUserInput = {
   id?: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -661,6 +679,7 @@ export type InvoiceScalarWhereInput = {
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientName?: Prisma.StringFilter<"Invoice"> | string
   clientEmail?: Prisma.StringFilter<"Invoice"> | string
+  client?: Prisma.JsonFilter<"Invoice">
   businessInfo?: Prisma.JsonFilter<"Invoice">
   lineItems?: Prisma.JsonFilter<"Invoice">
   taxRate?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -677,6 +696,7 @@ export type InvoiceCreateManyUserInput = {
   id?: string
   clientName: string
   clientEmail: string
+  client: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -693,6 +713,7 @@ export type InvoiceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -709,6 +730,7 @@ export type InvoiceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -725,6 +747,7 @@ export type InvoiceUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientName?: Prisma.StringFieldUpdateOperationsInput | string
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   businessInfo?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   lineItems?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   taxRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -744,6 +767,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   userId?: boolean
   clientName?: boolean
   clientEmail?: boolean
+  client?: boolean
   businessInfo?: boolean
   lineItems?: boolean
   taxRate?: boolean
@@ -762,6 +786,7 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   clientName?: boolean
   clientEmail?: boolean
+  client?: boolean
   businessInfo?: boolean
   lineItems?: boolean
   taxRate?: boolean
@@ -780,6 +805,7 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   clientName?: boolean
   clientEmail?: boolean
+  client?: boolean
   businessInfo?: boolean
   lineItems?: boolean
   taxRate?: boolean
@@ -798,6 +824,7 @@ export type InvoiceSelectScalar = {
   userId?: boolean
   clientName?: boolean
   clientEmail?: boolean
+  client?: boolean
   businessInfo?: boolean
   lineItems?: boolean
   taxRate?: boolean
@@ -810,7 +837,7 @@ export type InvoiceSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "clientName" | "clientEmail" | "businessInfo" | "lineItems" | "taxRate" | "currency" | "dueDate" | "notes" | "paymentMethod" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "clientName" | "clientEmail" | "client" | "businessInfo" | "lineItems" | "taxRate" | "currency" | "dueDate" | "notes" | "paymentMethod" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -831,6 +858,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     userId: string
     clientName: string
     clientEmail: string
+    client: runtime.JsonValue
     businessInfo: runtime.JsonValue
     lineItems: runtime.JsonValue
     taxRate: runtime.Decimal
@@ -1269,6 +1297,7 @@ export interface InvoiceFieldRefs {
   readonly userId: Prisma.FieldRef<"Invoice", 'String'>
   readonly clientName: Prisma.FieldRef<"Invoice", 'String'>
   readonly clientEmail: Prisma.FieldRef<"Invoice", 'String'>
+  readonly client: Prisma.FieldRef<"Invoice", 'Json'>
   readonly businessInfo: Prisma.FieldRef<"Invoice", 'Json'>
   readonly lineItems: Prisma.FieldRef<"Invoice", 'Json'>
   readonly taxRate: Prisma.FieldRef<"Invoice", 'Decimal'>

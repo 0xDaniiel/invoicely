@@ -885,6 +885,7 @@ export const InvoiceScalarFieldEnum = {
   userId: 'userId',
   clientName: 'clientName',
   clientEmail: 'clientEmail',
+  client: 'client',
   businessInfo: 'businessInfo',
   lineItems: 'lineItems',
   taxRate: 'taxRate',
