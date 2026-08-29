@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import type { Invoice } from "@/types/invoice";
 import { createInvoice } from "@/app/actions/invoice";
+import Link from "next/link";
 
 export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
   const { data: session, status } = useSession();
@@ -18,12 +19,12 @@ export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
   // UX convenience, not the actual security boundary.
   if (status !== "loading" && !session) {
     return (
-      <a
-        href="/login"
+      <Link
+        href="/"
         className="inline-flex items-center justify-center rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
       >
         Sign in to save
-      </a>
+      </Link>
     );
   }
 

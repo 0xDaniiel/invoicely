@@ -8,7 +8,7 @@ import type { NextAuthConfig } from "next-auth";
 // only) and `src/auth.ts` (full Node config, adds the adapter + providers).
 export const authConfig = {
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {

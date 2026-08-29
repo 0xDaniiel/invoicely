@@ -1,6 +1,7 @@
 // src/app/dashboard/layout.tsx
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
+import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import type { ReactNode } from "react";
 
 export default async function DashboardLayout({
@@ -24,20 +25,7 @@ export default async function DashboardLayout({
             >
               Invoicely
             </Link>
-            <nav className="flex items-center gap-1 text-sm font-medium">
-              <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
-              >
-                History
-              </Link>
-              <Link
-                href="/dashboard/new"
-                className="rounded-md px-3 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
-              >
-                New invoice
-              </Link>
-            </nav>
+            <DashboardNav />
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-sm text-zinc-500 sm:inline">
@@ -46,7 +34,7 @@ export default async function DashboardLayout({
             <form
               action={async () => {
                 "use server";
-                await signOut({ redirectTo: "/login" });
+                await signOut({ redirectTo: "/" });
               }}
             >
               <button
