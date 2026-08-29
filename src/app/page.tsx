@@ -1,20 +1,22 @@
-import { InvoiceWorkspace } from "@/components/invoice-preview/InvoiceWorkspace";
+// TODO (step 8): replace with the real marketing landing page
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col bg-zinc-50 font-sans dark:bg-black">
-      <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-8 sm:px-8">
-        <header className="mb-8">
-          <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            New invoice
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-500">
-            Fill in the details below, then tap Preview to see the exact PDF
-            you&apos;ll download.
-          </p>
-        </header>
-        <InvoiceWorkspace />
-      </main>
+    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 px-6 text-center dark:bg-black">
+      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+        Invoicely
+      </h1>
+      <p className="mt-2 max-w-sm text-sm text-zinc-500">
+        Create and send invoices with flexible payment methods — bank transfer,
+        payment links, or crypto.
+      </p>
+      <Link
+        href="/login"
+        className="mt-6 rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+      >
+        Get started
+      </Link>
     </div>
   );
 }

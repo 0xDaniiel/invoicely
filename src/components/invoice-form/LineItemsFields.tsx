@@ -8,15 +8,8 @@ import {
   calculateTax,
   calculateTotal,
 } from "@/types/invoice";
+import { formatCurrency } from "@/lib/format";
 import { IconButton, Section, TextInput } from "./FormPrimitives";
-
-function formatAmount(amount: number, currency: string) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    currencyDisplay: "narrowSymbol",
-  }).format(amount);
-}
 
 export function LineItemsFields() {
   const lineItems = useInvoiceStore((s) => s.invoice.lineItems);
@@ -82,7 +75,7 @@ export function LineItemsFields() {
                 }
               />
               <div className="text-right font-mono text-sm tabular-nums text-zinc-700 dark:text-zinc-300">
-                {formatAmount(amount, currency)}
+                {formatCurrency(amount, currency)}
               </div>
               <IconButton
                 onClick={() => removeLineItem(item.id)}
@@ -101,23 +94,23 @@ export function LineItemsFields() {
         + Add line item
       </IconButton>
 
-      <div className="mt-6 ml-auto flex w-full max-w-[260px] flex-col gap-1.5 text-sm">
+      <div className="mt-6 ml-auto flex w-full max-w-65 flex-col gap-1.5 text-sm">
         <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
           <span>Subtotal</span>
           <span className="font-mono tabular-nums">
-            {formatAmount(subtotal, currency)}
+            {formatCurrency(subtotal, currency)}
           </span>
         </div>
         <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
           <span>Tax ({taxRate || 0}%)</span>
           <span className="font-mono tabular-nums">
-            {formatAmount(tax, currency)}
+            {formatCurrency(tax, currency)}
           </span>
         </div>
         <div className="flex justify-between border-t border-zinc-200 pt-1.5 font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-100">
           <span>Total</span>
           <span className="font-mono tabular-nums">
-            {formatAmount(total, currency)}
+            {formatCurrency(total, currency)}
           </span>
         </div>
       </div>

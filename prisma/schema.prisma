@@ -84,7 +84,8 @@ model Invoice {
 
   clientName    String
   clientEmail   String
-  businessInfo  Json // BusinessInfo — snapshot at time of creation, not a live reference
+  client        Json // ClientInfo — full snapshot (incl. address); clientName/clientEmail duplicated above for fast list-view queries
+   businessInfo  Json // BusinessInfo — snapshot at time of creation, not a live reference
   lineItems     Json // LineItem[]
   taxRate       Decimal        @db.Decimal(5, 2)
   currency      String         @db.VarChar(3)

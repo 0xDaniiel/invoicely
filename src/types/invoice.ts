@@ -47,7 +47,7 @@ export interface LineItem {
   // amount is derived (quantity * rate), not stored — see store selector
 }
 
-export type InvoiceStatus = "draft" | "sent" | "paid" | "overdue"; // TODO: status tracking is step 7, field reserved now to avoid a later migration
+export type InvoiceStatus = "DRAFT" | "SENT" | "PAID" | "OVERDUE"; // matches the Prisma enum exactly — see prisma/schema.prisma
 
 export interface Invoice {
   business: BusinessInfo;
@@ -79,4 +79,11 @@ export function calculateTax(subtotal: number, taxRate: number): number {
 export function calculateTotal(lineItems: LineItem[], taxRate: number): number {
   const subtotal = calculateSubtotal(lineItems);
   return subtotal + calculateTax(subtotal, taxRate);
+}
+
+// A saved invoice, as read back from the database — the same shape used to
+// build the form/preview, plus what only exists once it's persisted.
+export interface InvoiceRecord extends Invoice {
+  id: string;
+  createdAt: string; // ISO string — dates cross the server/client boundary as strings, not Date objects
 }

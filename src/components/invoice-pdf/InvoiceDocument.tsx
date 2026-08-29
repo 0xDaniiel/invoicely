@@ -13,15 +13,8 @@ import {
   calculateTax,
   calculateTotal,
 } from "@/types/invoice";
+import { formatCurrency } from "@/lib/format";
 import { styles } from "./styles";
-
-function formatAmount(amount: number, currency: string) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    currencyDisplay: "narrowSymbol",
-  }).format(amount);
-}
 
 function formatDate(iso: string | null) {
   if (!iso) return "—";
@@ -102,10 +95,10 @@ export function InvoiceDocument({
               </Text>
               <Text style={[styles.colQty, styles.mono]}>{item.quantity}</Text>
               <Text style={[styles.colRate, styles.mono]}>
-                {formatAmount(item.rate, currency)}
+                {formatCurrency(item.rate, currency)}
               </Text>
               <Text style={[styles.colAmount, styles.mono]}>
-                {formatAmount(calculateLineItemAmount(item), currency)}
+                {formatCurrency(calculateLineItemAmount(item), currency)}
               </Text>
             </View>
           ))}
@@ -115,16 +108,18 @@ export function InvoiceDocument({
         <View style={styles.totalsBlock}>
           <View style={styles.totalsRow}>
             <Text style={styles.totalsLabel}>Subtotal</Text>
-            <Text style={styles.mono}>{formatAmount(subtotal, currency)}</Text>
+            <Text style={styles.mono}>
+              {formatCurrency(subtotal, currency)}
+            </Text>
           </View>
           <View style={styles.totalsRow}>
             <Text style={styles.totalsLabel}>Tax ({taxRate || 0}%)</Text>
-            <Text style={styles.mono}>{formatAmount(tax, currency)}</Text>
+            <Text style={styles.mono}>{formatCurrency(tax, currency)}</Text>
           </View>
           <View style={styles.totalsRowFinal}>
             <Text style={styles.totalsLabelFinal}>Total</Text>
             <Text style={[styles.mono, styles.totalsLabelFinal]}>
-              {formatAmount(total, currency)}
+              {formatCurrency(total, currency)}
             </Text>
           </View>
         </View>
