@@ -1,6 +1,7 @@
 // src/components/dashboard/InvoiceHistoryRow.tsx
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { InvoiceRecord } from "@/types/invoice";
 import { calculateTotal } from "@/types/invoice";
@@ -11,11 +12,7 @@ import { DownloadPdfButton } from "@/components/invoice-preview/DownloadPdfButto
 import { StatusBadge } from "./StatusBadge";
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
 export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
@@ -33,9 +30,7 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
             </p>
             <StatusBadge status={invoice.status} />
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500">
-            {formatDate(invoice.createdAt)}
-          </p>
+          <p className="mt-0.5 text-xs text-zinc-500">{formatDate(invoice.createdAt)}</p>
         </div>
         <div className="flex items-center gap-4">
           <span className="font-mono text-sm tabular-nums text-zinc-700 dark:text-zinc-300">
@@ -48,10 +43,13 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
           >
             View
           </button>
-          <DownloadPdfButton
-            invoice={invoice}
-            walletQrCodeDataUrl={walletQrCodeDataUrl}
-          />
+          <Link
+            href={`/dashboard/edit/${invoice.id}`}
+            className="text-sm font-medium text-zinc-600 transition-colors hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400"
+          >
+            Edit
+          </Link>
+          <DownloadPdfButton invoice={invoice} walletQrCodeDataUrl={walletQrCodeDataUrl} />
         </div>
       </div>
 

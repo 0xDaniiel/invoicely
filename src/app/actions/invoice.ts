@@ -55,3 +55,54 @@ export async function createInvoice(
 
   return { success: true, invoiceId: created.id };
 }
+
+type UpdateInvoiceResult =
+  | { success: true }
+  | { success: false; error: string };
+
+export async function updateInvoice(
+  invoiceId: string,
+  input: CreateInvoiceInput,
+): Promise<UpdateInvoiceResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      success: false,
+      error: "You must be signed in to save an invoice.",
+    };
+  }
+
+  const parsed = createInvoiceSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Invalid invoice data.",
+    };
+  }
+  const invoice = parsed.data;
+
+  // `updateMany` with userId in the where clause, rather than `update` by id
+  // alone, so this can never touch a row owned by someone else — matching
+  // zero rows (wrong id OR wrong owner) both look identical from outside,
+  // which is the point: no information leaks about invoices you don't own.
+  const result = await prisma.invoice.updateMany({
+    where: { id: invoiceId, userId: session.user.id },
+    data: {
+      clientName: invoice.client.name,
+      clientEmail: invoice.client.email,
+      client: invoice.client,
+      businessInfo: invoice.business,
+      lineItems: invoice.lineItems,
+      taxRate: invoice.taxRate,
+      currency: invoice.currency,
+      dueDate: invoice.dueDate ? new Date(invoice.dueDate) : null,
+      notes: invoice.notes || null,
+      paymentMethod: invoice.paymentMethods,
+    },
+  });
+
+  if (result.count === 0) {
+    return { success: false, error: "Invoice not found." };
+  }
+  return { success: true };
+}

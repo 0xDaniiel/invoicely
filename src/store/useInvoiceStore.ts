@@ -35,6 +35,10 @@ const initialInvoice: Invoice = {
 interface InvoiceStore {
   invoice: Invoice;
 
+  // load an existing invoice into the form (edit flow) — see reset() for
+  // the opposite: starting a blank new invoice
+  loadInvoice: (invoice: Invoice) => void;
+
   // business / client
   setBusinessInfo: (business: Partial<BusinessInfo>) => void;
   setClientInfo: (client: Partial<ClientInfo>) => void;
@@ -62,14 +66,22 @@ interface InvoiceStore {
 export const useInvoiceStore = create<InvoiceStore>((set) => ({
   invoice: initialInvoice,
 
+  loadInvoice: (invoice) => set({ invoice }),
+
   setBusinessInfo: (business) =>
     set((state) => ({
-      invoice: { ...state.invoice, business: { ...state.invoice.business, ...business } },
+      invoice: {
+        ...state.invoice,
+        business: { ...state.invoice.business, ...business },
+      },
     })),
 
   setClientInfo: (client) =>
     set((state) => ({
-      invoice: { ...state.invoice, client: { ...state.invoice.client, ...client } },
+      invoice: {
+        ...state.invoice,
+        client: { ...state.invoice.client, ...client },
+      },
     })),
 
   addLineItem: () =>
@@ -85,7 +97,7 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
       invoice: {
         ...state.invoice,
         lineItems: state.invoice.lineItems.map((item) =>
-          item.id === id ? { ...item, ...patch } : item
+          item.id === id ? { ...item, ...patch } : item,
         ),
       },
     })),
@@ -102,10 +114,14 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
       },
     })),
 
-  setTaxRate: (taxRate) => set((state) => ({ invoice: { ...state.invoice, taxRate } })),
-  setCurrency: (currency) => set((state) => ({ invoice: { ...state.invoice, currency } })),
-  setDueDate: (dueDate) => set((state) => ({ invoice: { ...state.invoice, dueDate } })),
-  setNotes: (notes) => set((state) => ({ invoice: { ...state.invoice, notes } })),
+  setTaxRate: (taxRate) =>
+    set((state) => ({ invoice: { ...state.invoice, taxRate } })),
+  setCurrency: (currency) =>
+    set((state) => ({ invoice: { ...state.invoice, currency } })),
+  setDueDate: (dueDate) =>
+    set((state) => ({ invoice: { ...state.invoice, dueDate } })),
+  setNotes: (notes) =>
+    set((state) => ({ invoice: { ...state.invoice, notes } })),
 
   togglePaymentMethod: (type, enabled) =>
     set((state) => {
@@ -113,7 +129,11 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
       if (!enabled) {
         delete paymentMethods[type];
       } else if (type === "bank" && !paymentMethods.bank) {
-        paymentMethods.bank = { bankName: "", accountName: "", accountNumber: "" };
+        paymentMethods.bank = {
+          bankName: "",
+          accountName: "",
+          accountNumber: "",
+        };
       } else if (type === "link" && !paymentMethods.link) {
         paymentMethods.link = { provider: "", url: "" };
       } else if (type === "wallet" && !paymentMethods.wallet) {
@@ -128,7 +148,10 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
         ...state.invoice,
         paymentMethods: {
           ...state.invoice.paymentMethods,
-          bank: { ...(state.invoice.paymentMethods.bank as BankDetails), ...bank },
+          bank: {
+            ...(state.invoice.paymentMethods.bank as BankDetails),
+            ...bank,
+          },
         },
       },
     })),
@@ -139,7 +162,10 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
         ...state.invoice,
         paymentMethods: {
           ...state.invoice.paymentMethods,
-          link: { ...(state.invoice.paymentMethods.link as PaymentLink), ...link },
+          link: {
+            ...(state.invoice.paymentMethods.link as PaymentLink),
+            ...link,
+          },
         },
       },
     })),
@@ -150,7 +176,10 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
         ...state.invoice,
         paymentMethods: {
           ...state.invoice.paymentMethods,
-          wallet: { ...(state.invoice.paymentMethods.wallet as WalletDetails), ...wallet },
+          wallet: {
+            ...(state.invoice.paymentMethods.wallet as WalletDetails),
+            ...wallet,
+          },
         },
       },
     })),
