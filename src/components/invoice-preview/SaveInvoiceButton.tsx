@@ -5,10 +5,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import type { Invoice } from "@/types/invoice";
-import { createInvoice } from "@/app/actions/invoice";
+import { createInvoice, updateInvoice } from "@/app/actions/invoice";
 import Link from "next/link";
 
-export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
+export function SaveInvoiceButton({
+  invoice,
+  invoiceId,
+}: {
+  invoice: Invoice;
+  invoiceId?: string; // present when editing an existing invoice; absent when creating a new one
+}) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -31,7 +37,7 @@ export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
   async function handleSave() {
     setIsSaving(true);
     setError(null);
-    const result = await createInvoice({
+    const payload = {
       business: invoice.business,
       client: invoice.client,
       lineItems: invoice.lineItems,
@@ -40,7 +46,10 @@ export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
       dueDate: invoice.dueDate,
       notes: invoice.notes,
       paymentMethods: invoice.paymentMethods,
-    });
+    };
+    const result = invoiceId
+      ? await updateInvoice(invoiceId, payload)
+      : await createInvoice(payload);
     setIsSaving(false);
 
     if (!result.success) {
@@ -58,7 +67,7 @@ export function SaveInvoiceButton({ invoice }: { invoice: Invoice }) {
         disabled={isSaving || status === "loading"}
         className="inline-flex items-center justify-center rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
       >
-        {isSaving ? "Saving…" : "Save invoice"}
+        {isSaving ? "Saving…" : invoiceId ? "Save changes" : "Save invoice"}
       </button>
       {error && (
         <p className="text-xs text-red-600 dark:text-red-400">{error}</p>
