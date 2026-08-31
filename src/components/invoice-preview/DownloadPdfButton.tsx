@@ -2,6 +2,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { Download, Loader2 } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import { InvoiceDocument } from "@/components/invoice-pdf/InvoiceDocument";
 
@@ -24,6 +25,9 @@ const PDFDownloadLink = dynamic(
 interface DownloadPdfButtonProps {
   invoice: Invoice;
   walletQrCodeDataUrl: string | null;
+  // Compact icon-only rendering for tight spaces (e.g. the History row).
+  // Defaults to false so existing usage (the form's action bar) is unchanged.
+  iconOnly?: boolean;
 }
 
 function fileName(invoice: Invoice) {
@@ -35,7 +39,33 @@ function fileName(invoice: Invoice) {
 export function DownloadPdfButton({
   invoice,
   walletQrCodeDataUrl,
+  iconOnly = false,
 }: DownloadPdfButtonProps) {
+  if (iconOnly) {
+    return (
+      <PDFDownloadLink
+        document={
+          <InvoiceDocument
+            invoice={invoice}
+            walletQrCodeDataUrl={walletQrCodeDataUrl}
+          />
+        }
+        fileName={fileName(invoice)}
+        title="Download PDF"
+        aria-label="Download invoice as PDF"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-indigo-600 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-indigo-400"
+      >
+        {({ loading }: { loading: boolean }) =>
+          loading ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <Download size={16} />
+          )
+        }
+      </PDFDownloadLink>
+    );
+  }
+
   return (
     <PDFDownloadLink
       document={

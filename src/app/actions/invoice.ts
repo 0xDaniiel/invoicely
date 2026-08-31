@@ -1,6 +1,7 @@
 // src/app/actions/invoice.ts
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import {
@@ -53,6 +54,11 @@ export async function createInvoice(
     select: { id: true },
   });
 
+  // Without this, the History page's cached data has no way to know a new
+  // row exists — navigating back to it would show stale data until a
+  // manual browser refresh.
+  revalidatePath("/dashboard");
+
   return { success: true, invoiceId: created.id };
 }
 
@@ -104,5 +110,38 @@ export async function updateInvoice(
   if (result.count === 0) {
     return { success: false, error: "Invoice not found." };
   }
+
+  revalidatePath("/dashboard");
+
+  return { success: true };
+}
+
+type DeleteInvoiceResult =
+  | { success: true }
+  | { success: false; error: string };
+
+export async function deleteInvoice(
+  invoiceId: string,
+): Promise<DeleteInvoiceResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      success: false,
+      error: "You must be signed in to delete an invoice.",
+    };
+  }
+
+  // Same ownership-scoped pattern as updateInvoice — deleteMany rather than
+  // delete by id alone, so this can never remove a row owned by someone else.
+  const result = await prisma.invoice.deleteMany({
+    where: { id: invoiceId, userId: session.user.id },
+  });
+
+  if (result.count === 0) {
+    return { success: false, error: "Invoice not found." };
+  }
+
+  revalidatePath("/dashboard");
+
   return { success: true };
 }
