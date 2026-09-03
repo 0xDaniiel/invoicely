@@ -1,5 +1,6 @@
 // src/lib/validations/invoice.ts
 import { z } from "zod";
+import { WALLET_NETWORK_VALUES } from "@/lib/wallet-networks";
 
 // Deliberately lenient: this validates a SAVED DRAFT, not a finalized,
 // ready-to-send invoice. The only thing required to save is a client name
@@ -28,7 +29,7 @@ const paymentLinkSchema = z.object({
 });
 
 const walletDetailsSchema = z.object({
-  network: z.string(),
+  network: z.enum(WALLET_NETWORK_VALUES),
   address: z.string(),
   showQrCode: z.boolean(),
 });

@@ -137,7 +137,11 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
       } else if (type === "link" && !paymentMethods.link) {
         paymentMethods.link = { provider: "", url: "" };
       } else if (type === "wallet" && !paymentMethods.wallet) {
-        paymentMethods.wallet = { network: "", address: "", showQrCode: true };
+        paymentMethods.wallet = {
+          network: "ethereum",
+          address: "",
+          showQrCode: true,
+        };
       }
       return { invoice: { ...state.invoice, paymentMethods } };
     }),

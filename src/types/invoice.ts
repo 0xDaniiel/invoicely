@@ -1,4 +1,5 @@
 // types/invoice.ts
+import type { WalletNetwork } from "@/lib/wallet-networks";
 
 export type PaymentMethodType = "bank" | "link" | "wallet";
 
@@ -15,7 +16,7 @@ export interface PaymentLink {
 }
 
 export interface WalletDetails {
-  network: string; // e.g. "Ethereum", "Solana", "Bitcoin" — TODO: proper network enum + QR network selector (step 7)
+  network: WalletNetwork;
   address: string;
   showQrCode: boolean;
 }

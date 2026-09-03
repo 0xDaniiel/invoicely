@@ -50,6 +50,7 @@ export function InvoiceWorkspace({ invoiceId }: { invoiceId?: string }) {
         <DownloadPdfButton
           invoice={invoice}
           walletQrCodeDataUrl={walletQrCodeDataUrl}
+          invoiceId={currentId}
         />
         <SaveInvoiceButton invoice={invoice} invoiceId={currentId} />
       </div>

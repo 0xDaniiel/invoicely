@@ -3,6 +3,7 @@
 
 import { PaymentMethodType } from "@/types/invoice";
 import { useInvoiceStore } from "@/store/useInvoiceStore";
+import { WALLET_NETWORKS, type WalletNetwork } from "@/lib/wallet-networks";
 import { Field, Section, TextInput } from "./FormPrimitives";
 
 const METHOD_LABELS: Record<PaymentMethodType, string> = {
@@ -110,13 +111,20 @@ function WalletDetailsFields() {
   return (
     <div className="grid grid-cols-1 gap-4 rounded-md border border-zinc-200 p-4 sm:grid-cols-2 dark:border-zinc-800">
       <Field label="Network" htmlFor="wallet-network">
-        {/* TODO (step 7): swap for a proper network selector — drives which QR format/validation applies */}
-        <TextInput
+        <select
           id="wallet-network"
           value={wallet.network}
-          onChange={(e) => setWalletDetails({ network: e.target.value })}
-          placeholder="Ethereum, Solana, Bitcoin…"
-        />
+          onChange={(e) =>
+            setWalletDetails({ network: e.target.value as WalletNetwork })
+          }
+          className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+        >
+          {WALLET_NETWORKS.map((n) => (
+            <option key={n.value} value={n.value}>
+              {n.label}
+            </option>
+          ))}
+        </select>
       </Field>
       <Field label="Wallet address" htmlFor="wallet-address">
         <TextInput
@@ -135,7 +143,6 @@ function WalletDetailsFields() {
         />
         Show QR code on invoice
       </label>
-      {/* TODO: generate the actual QR (e.g. via `qrcode`) once this feeds the preview */}
     </div>
   );
 }

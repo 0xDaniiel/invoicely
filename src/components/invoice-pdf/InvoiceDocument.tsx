@@ -14,6 +14,7 @@ import {
   calculateTotal,
 } from "@/types/invoice";
 import { formatCurrency } from "@/lib/format";
+import { getWalletNetworkLabel } from "@/lib/wallet-networks";
 import { styles } from "./styles";
 
 function formatDate(iso: string | null) {
@@ -171,7 +172,8 @@ export function InvoiceDocument({
             {paymentMethods.wallet && (
               <View style={styles.paymentMethodBlock}>
                 <Text style={styles.paymentMethodTitle}>
-                  Crypto ({paymentMethods.wallet.network || "network not set"})
+                  Crypto ({getWalletNetworkLabel(paymentMethods.wallet.network)}
+                  )
                 </Text>
                 <View style={styles.walletRow}>
                   <Text style={styles.mono}>

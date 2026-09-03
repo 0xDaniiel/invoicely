@@ -145,3 +145,49 @@ export async function deleteInvoice(
 
   return { success: true };
 }
+
+type StatusUpdateResult = { success: true } | { success: false; error: string };
+
+export async function markInvoiceAsSent(
+  invoiceId: string,
+): Promise<StatusUpdateResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  // Scoped to status: "DRAFT" so this only ever flips Draft → Sent — it's a
+  // harmless no-op (0 rows updated) if the invoice was already Sent or Paid,
+  // which matters because Download can be clicked repeatedly (e.g. someone
+  // re-downloading a Paid invoice must not silently downgrade its status).
+  await prisma.invoice.updateMany({
+    where: { id: invoiceId, userId: session.user.id, status: "DRAFT" },
+    data: { status: "SENT" },
+  });
+
+  revalidatePath("/dashboard");
+
+  return { success: true };
+}
+
+export async function markInvoiceAsPaid(
+  invoiceId: string,
+): Promise<StatusUpdateResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { success: false, error: "You must be signed in." };
+  }
+
+  const result = await prisma.invoice.updateMany({
+    where: { id: invoiceId, userId: session.user.id },
+    data: { status: "PAID" },
+  });
+
+  if (result.count === 0) {
+    return { success: false, error: "Invoice not found." };
+  }
+
+  revalidatePath("/dashboard");
+
+  return { success: true };
+}

@@ -13,6 +13,7 @@ import { InvoicePreviewModal } from "@/components/invoice-preview/InvoicePreview
 import { DownloadPdfButton } from "@/components/invoice-preview/DownloadPdfButton";
 import { deleteInvoice } from "@/app/actions/invoice";
 import { DeleteInvoiceDialog } from "./DeleteInvoiceDialog";
+import { MarkAsPaidButton } from "./MarkAsPaidButton";
 import { StatusBadge } from "./StatusBadge";
 
 function formatDate(iso: string) {
@@ -69,7 +70,11 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
             invoice={invoice}
             walletQrCodeDataUrl={walletQrCodeDataUrl}
             iconOnly
+            invoiceId={invoice.id}
           />
+          {invoice.status !== "PAID" && (
+            <MarkAsPaidButton invoiceId={invoice.id} />
+          )}
           <button
             type="button"
             onClick={() => setDeleteDialogOpen(true)}
