@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import "./globals.css";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
 
-const fontSans = Space_Grotesk({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fontMono = JetBrains_Mono({
   variable: "--font-mono",
@@ -24,7 +22,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col">
         <SessionProvider session={session}>{children}</SessionProvider>

@@ -1,0 +1,7 @@
+Your existing shadcn button.tsx is missing the "hero" variant the landing page uses.
+In components/ui/button.tsx, inside the `variants: { variant: { ... } }` object of
+buttonVariants, add this one line:
+
+        hero: "bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:-translate-y-0.5",
+
+That's the only change needed — keep the rest of your button file as-is.

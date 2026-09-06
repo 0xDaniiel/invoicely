@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { InvoiceHistoryList } from "@/components/dashboard/InvoiceHistoryList";
+import { PaginationControls } from "@/components/dashboard/PaginationControls";
 import { getEffectiveStatus } from "@/lib/invoice-status";
 import type {
   BusinessInfo,
@@ -10,15 +11,32 @@ import type {
   PaymentMethods,
 } from "@/types/invoice";
 
-export default async function DashboardHistoryPage() {
+const PAGE_SIZE = 10;
+
+export default async function DashboardHistoryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   // Middleware guarantees a session exists for this route; session.user.id
   // is what scopes this query to only the signed-in user's own invoices.
   const session = await auth();
+  const userId = session!.user.id;
 
-  const rows = await prisma.invoice.findMany({
-    where: { userId: session!.user.id },
-    orderBy: { createdAt: "desc" },
-  });
+  const { page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
+
+  const [rows, totalCount] = await Promise.all([
+    prisma.invoice.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      skip: (currentPage - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+    }),
+    prisma.invoice.count({ where: { userId } }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   // Json columns come back from Prisma as `Prisma.JsonValue` — cast here to
   // the shapes we know we wrote (see src/app/actions/invoice.ts, which is
@@ -51,10 +69,11 @@ export default async function DashboardHistoryPage() {
           Invoice history
         </h1>
         <p className="mt-1 text-sm text-zinc-500">
-          {invoices.length} invoice{invoices.length === 1 ? "" : "s"}
+          {totalCount} invoice{totalCount === 1 ? "" : "s"}
         </p>
       </header>
       <InvoiceHistoryList invoices={invoices} />
+      <PaginationControls currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }
