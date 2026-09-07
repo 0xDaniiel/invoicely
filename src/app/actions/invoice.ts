@@ -4,6 +4,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/generated/prisma/client";
 import {
   createInvoiceSchema,
   type CreateInvoiceInput,
@@ -190,4 +191,53 @@ export async function markInvoiceAsPaid(
   revalidatePath("/dashboard");
 
   return { success: true };
+}
+
+export async function duplicateInvoice(
+  invoiceId: string,
+): Promise<CreateInvoiceResult> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      success: false,
+      error: "You must be signed in to duplicate an invoice.",
+    };
+  }
+
+  // findFirst scoped to userId — same ownership pattern as everywhere
+  // else, so this can't read (let alone copy) a row owned by someone else.
+  const source = await prisma.invoice.findFirst({
+    where: { id: invoiceId, userId: session.user.id },
+  });
+
+  if (!source) {
+    return { success: false, error: "Invoice not found." };
+  }
+
+  // A genuinely independent copy: new id, new createdAt/updatedAt (handled
+  // by Prisma defaults), and status reset to DRAFT even if the source was
+  // Sent/Paid/Overdue — this is a fresh invoice, not a continuation of the
+  // old one. Nothing here references the source row going forward; editing
+  // either one has zero effect on the other.
+  const duplicate = await prisma.invoice.create({
+    data: {
+      userId: session.user.id,
+      clientName: source.clientName,
+      clientEmail: source.clientEmail,
+      client: source.client as Prisma.InputJsonValue,
+      businessInfo: source.businessInfo as Prisma.InputJsonValue,
+      lineItems: source.lineItems as Prisma.InputJsonValue,
+      taxRate: source.taxRate,
+      currency: source.currency,
+      dueDate: source.dueDate,
+      notes: source.notes,
+      paymentMethod: source.paymentMethod as Prisma.InputJsonValue,
+      // status intentionally omitted — defaults to DRAFT, see prisma/schema.prisma
+    },
+    select: { id: true },
+  });
+
+  revalidatePath("/dashboard");
+
+  return { success: true, invoiceId: duplicate.id };
 }

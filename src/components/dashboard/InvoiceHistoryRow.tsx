@@ -4,14 +4,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2, Copy, Loader2 } from "lucide-react";
 import type { InvoiceRecord } from "@/types/invoice";
 import { calculateTotal } from "@/types/invoice";
 import { formatCurrency } from "@/lib/format";
 import { useWalletQrCode } from "@/hooks/useWalletQrCode";
 import { InvoicePreviewModal } from "@/components/invoice-preview/InvoicePreviewModal";
 import { DownloadPdfButton } from "@/components/invoice-preview/DownloadPdfButton";
-import { deleteInvoice } from "@/app/actions/invoice";
+import { deleteInvoice, duplicateInvoice } from "@/app/actions/invoice";
 import { DeleteInvoiceDialog } from "./DeleteInvoiceDialog";
 import { MarkAsPaidButton } from "./MarkAsPaidButton";
 import { StatusBadge } from "./StatusBadge";
@@ -28,8 +28,22 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
   const router = useRouter();
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDuplicating, setIsDuplicating] = useState(false);
   const walletQrCodeDataUrl = useWalletQrCode(invoice.paymentMethods.wallet);
   const total = calculateTotal(invoice.lineItems, invoice.taxRate);
+
+  async function handleDuplicate() {
+    setIsDuplicating(true);
+    const result = await duplicateInvoice(invoice.id);
+    if (!result.success) {
+      setIsDuplicating(false);
+      window.alert(result.error);
+      return;
+    }
+    // Land directly on the new copy so it can be customized right away —
+    // it's already saved as an independent Draft, this is just convenience.
+    router.push(`/dashboard/edit/${result.invoiceId}`);
+  }
 
   return (
     <>
@@ -66,6 +80,20 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
           >
             <Pencil size={16} />
           </Link>
+          <button
+            type="button"
+            onClick={handleDuplicate}
+            disabled={isDuplicating}
+            title="Duplicate"
+            aria-label="Duplicate invoice"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-indigo-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-indigo-400"
+          >
+            {isDuplicating ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Copy size={16} />
+            )}
+          </button>
           <DownloadPdfButton
             invoice={invoice}
             walletQrCodeDataUrl={walletQrCodeDataUrl}
