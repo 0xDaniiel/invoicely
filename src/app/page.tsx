@@ -11,12 +11,13 @@ import { GetStartedSection } from "@/components/landing/GetStartedSection";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Invoicely — Get paid your way",
+  title: "Get Paid Your Way",
   description:
-    "Create polished invoices with bank transfer, payment links, or crypto. Free, fast, and built for independent work.",
+    "Create polished invoices in minutes and get paid by bank transfer, payment link, or crypto. Free invoicing built for freelancers and independent businesses.",
   openGraph: {
-    title: "Invoicely — Get paid your way",
-    description: "Flexible, polished invoicing for independent work.",
+    title: "Invoicely: Get Paid Your Way",
+    description:
+      "Create polished invoices and get paid by bank transfer, payment link, or crypto.",
     type: "website",
   },
   twitter: { card: "summary_large_image" },
