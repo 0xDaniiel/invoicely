@@ -62,7 +62,7 @@ export function InvoiceMetaFields() {
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Thank you for your business — payment due within 14 days."
+            placeholder="Thank you for your business. Payment is due within 14 days."
           />
         </Field>
       </div>
