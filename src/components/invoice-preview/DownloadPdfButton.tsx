@@ -8,7 +8,6 @@ import type { Invoice } from "@/types/invoice";
 import { InvoiceDocument } from "@/components/invoice-pdf/InvoiceDocument";
 import { markInvoiceAsSent } from "@/app/actions/invoice";
 
-// PDFDownloadLink also touches browser-only APIs to build the blob — client-only.
 const PDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
   {
@@ -27,11 +26,7 @@ const PDFDownloadLink = dynamic(
 interface DownloadPdfButtonProps {
   invoice: Invoice;
   walletQrCodeDataUrl: string | null;
-  // Compact icon-only rendering for tight spaces (e.g. the History row).
-  // Defaults to false so existing usage (the form's action bar) is unchanged.
-  iconOnly?: boolean;
-  // When known (an already-saved invoice), downloading marks it Sent.
-  // Undefined for a brand-new, not-yet-saved invoice — nothing to mark yet.
+  variant?: "button" | "icon" | "menuItem";
   invoiceId?: string;
 }
 
@@ -41,31 +36,33 @@ function fileName(invoice: Invoice) {
   return `${client}-${date}.pdf`;
 }
 
+const menuItemClass =
+  "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm text-zinc-700 transition-colors hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800";
+
 export function DownloadPdfButton({
   invoice,
   walletQrCodeDataUrl,
-  iconOnly = false,
+  variant = "button",
   invoiceId,
 }: DownloadPdfButtonProps) {
   const router = useRouter();
 
-  // Fire-and-forget: the download itself (handled internally by
-  // PDFDownloadLink) shouldn't wait on this. markInvoiceAsSent is a no-op
-  // if the invoice isn't currently Draft, so repeat downloads are safe.
   function handleClick() {
     if (!invoiceId) return;
     markInvoiceAsSent(invoiceId).then(() => router.refresh());
   }
 
-  if (iconOnly) {
+  const document = (
+    <InvoiceDocument
+      invoice={invoice}
+      walletQrCodeDataUrl={walletQrCodeDataUrl}
+    />
+  );
+
+  if (variant === "icon") {
     return (
       <PDFDownloadLink
-        document={
-          <InvoiceDocument
-            invoice={invoice}
-            walletQrCodeDataUrl={walletQrCodeDataUrl}
-          />
-        }
+        document={document}
         fileName={fileName(invoice)}
         title="Download PDF"
         aria-label="Download invoice as PDF"
@@ -83,14 +80,31 @@ export function DownloadPdfButton({
     );
   }
 
+  if (variant === "menuItem") {
+    return (
+      <PDFDownloadLink
+        document={document}
+        fileName={fileName(invoice)}
+        onClick={handleClick}
+        className={menuItemClass}
+      >
+        {({ loading }: { loading: boolean }) => (
+          <>
+            {loading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Download size={16} />
+            )}
+            Download PDF
+          </>
+        )}
+      </PDFDownloadLink>
+    );
+  }
+
   return (
     <PDFDownloadLink
-      document={
-        <InvoiceDocument
-          invoice={invoice}
-          walletQrCodeDataUrl={walletQrCodeDataUrl}
-        />
-      }
+      document={document}
       fileName={fileName(invoice)}
       onClick={handleClick}
       className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
