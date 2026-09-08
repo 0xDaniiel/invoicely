@@ -31,7 +31,7 @@ export function InvoiceHistoryRow({ invoice }: { invoice: InvoiceRecord }) {
             <button
               type="button"
               onClick={() => setPreviewOpen(true)}
-              className="truncate text-sm font-medium text-zinc-900 transition-colors hover:text-indigo-600 hover:underline dark:text-zinc-100 dark:hover:text-indigo-400"
+              className="truncate text-sm font-medium text-zinc-900 transition-colors hover:text-primary hover:underline dark:text-zinc-100 dark:hover:text-primary"
             >
               {invoice.client.name || "Untitled client"}
             </button>

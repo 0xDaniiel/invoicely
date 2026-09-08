@@ -14,7 +14,7 @@ export function PaginationControls({
   const nextPage = Math.min(totalPages, currentPage + 1);
   const disabledClass = "pointer-events-none text-zinc-300 dark:text-zinc-700";
   const enabledClass =
-    "text-zinc-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400";
+    "text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-primary";
 
   return (
     <div className="mt-6 flex items-center justify-between">

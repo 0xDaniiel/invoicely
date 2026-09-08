@@ -1,15 +1,10 @@
 // components/invoice-form/FormPrimitives.tsx
-import {
-  InputHTMLAttributes,
-  // LabelHTMLAttributes,
-  ReactNode,
-  TextareaHTMLAttributes,
-} from "react";
+import { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
 
 // Shared visual language for the invoice form:
 // - section = a numbered ledger entry (business, client, items, terms, payment)
 // - mono type for anything numeric/monetary, sans for everything else
-// - single accent (indigo-600) reserved for focus rings and primary actions
+// - single accent (primary/green) reserved for focus rings and primary actions
 
 export function Section({
   index,
@@ -68,7 +63,7 @@ export function Field({
 }
 
 const baseInputClasses =
-  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-colors focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100";
+  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100";
 
 export function TextInput({
   mono = false,
@@ -103,7 +98,7 @@ export function IconButton({
   return (
     <button
       type="button"
-      className={`inline-flex items-center gap-1 text-xs font-medium text-zinc-500 transition-colors hover:text-indigo-600 disabled:cursor-not-allowed disabled:opacity-40 dark:text-zinc-400 dark:hover:text-indigo-400 ${className}`}
+      className={`inline-flex items-center gap-1 text-xs font-medium text-zinc-500 transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 dark:text-zinc-400 dark:hover:text-primary ${className}`}
       {...props}
     >
       {children}

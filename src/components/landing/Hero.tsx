@@ -24,7 +24,7 @@ export function Hero() {
             One clean invoice for every way you work. Add bank transfer, payment
             links, or crypto, then send a polished PDF in minutes.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-row flex-wrap gap-3">
             <GoogleSignInButton label="Start free with Google" />
             <Button asChild variant="outline" size="lg">
               <a href="#how-it-works">See how it works</a>

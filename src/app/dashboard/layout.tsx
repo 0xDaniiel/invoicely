@@ -1,7 +1,8 @@
 // src/app/dashboard/layout.tsx
 import Link from "next/link";
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { UserMenu } from "@/components/dashboard/UserMenu";
 import type { ReactNode } from "react";
 
 export default async function DashboardLayout({
@@ -16,35 +17,19 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <header className="border-b border-zinc-200 dark:border-zinc-800">
+      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 sm:px-8">
           <div className="flex items-center gap-6">
             <Link
               href="/dashboard"
-              className="font-semibold text-zinc-900 dark:text-zinc-100"
+              className="flex items-center gap-2 font-display text-xl font-extrabold text-zinc-900 dark:text-zinc-100"
             >
               Invoicely
+              <span className="text-primary">.</span>
             </Link>
             <DashboardNav />
           </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-zinc-500 sm:inline">
-              {session?.user?.email}
-            </span>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/" });
-              }}
-            >
-              <button
-                type="submit"
-                className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
-              >
-                Sign out
-              </button>
-            </form>
-          </div>
+          <UserMenu email={session?.user?.email} image={session?.user?.image} />
         </div>
       </header>
       <main className="flex-1 px-6 py-8 sm:px-8">{children}</main>

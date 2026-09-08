@@ -14,7 +14,7 @@ export function InvoiceHistoryList({
         <p className="text-sm text-zinc-500">No invoices yet.</p>
         <Link
           href="/dashboard/new"
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
         >
           Create your first invoice
         </Link>

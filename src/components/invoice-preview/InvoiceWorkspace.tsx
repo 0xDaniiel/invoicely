@@ -44,15 +44,19 @@ export function InvoiceWorkspace({ invoiceId }: { invoiceId?: string }) {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col">
       <InvoiceForm />
-      <div className="mt-6 flex items-center justify-end gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+      <div className="shrink-0">
         <AutosaveIndicator status={autosaveStatus} error={autosaveError} />
-        <PreviewButton onClick={() => setPreviewOpen(true)} />
-        <DownloadPdfButton
-          invoice={invoice}
-          walletQrCodeDataUrl={walletQrCodeDataUrl}
-          invoiceId={currentId}
-        />
-        <SaveInvoiceButton invoice={invoice} invoiceId={currentId} />
+      </div>
+      <div className="mt-6 flex items-center gap-3 overflow-x-auto border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <div className="ml-auto flex shrink-0 items-center gap-3">
+          <PreviewButton onClick={() => setPreviewOpen(true)} />
+          <DownloadPdfButton
+            invoice={invoice}
+            walletQrCodeDataUrl={walletQrCodeDataUrl}
+            invoiceId={currentId}
+          />
+          <SaveInvoiceButton invoice={invoice} invoiceId={currentId} />
+        </div>
       </div>
 
       {/* PDFViewer only mounts once the modal opens — no background re-render on every keystroke */}

@@ -25,7 +25,7 @@ function MethodToggle({ type }: { type: PaymentMethodType }) {
       aria-pressed={enabled}
       className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
         enabled
-          ? "border-indigo-600 bg-indigo-600 text-white"
+          ? "border-primary bg-primary text-white"
           : "border-zinc-300 text-zinc-600 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-400"
       }`}
     >
@@ -117,7 +117,7 @@ function WalletDetailsFields() {
           onChange={(e) =>
             setWalletDetails({ network: e.target.value as WalletNetwork })
           }
-          className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+          className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
         >
           {WALLET_NETWORKS.map((n) => (
             <option key={n.value} value={n.value}>
@@ -139,7 +139,7 @@ function WalletDetailsFields() {
           type="checkbox"
           checked={wallet.showQrCode}
           onChange={(e) => setWalletDetails({ showQrCode: e.target.checked })}
-          className="h-3.5 w-3.5 accent-indigo-600"
+          className="h-3.5 w-3.5 accent-primary"
         />
         Show QR code on invoice
       </label>
